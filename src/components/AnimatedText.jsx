@@ -1,5 +1,5 @@
 
-export default function AnimatedText({ text, delayStep = 100 }) {
+export default function AnimatedText({ text, delay = 0, delayStep = 100 }) {
 
   return (
     <>
@@ -9,10 +9,10 @@ export default function AnimatedText({ text, delayStep = 100 }) {
           className="animate-jump-in"
 
           style={{ 
-            animationDelay: `${delayStep * (index + 1)}ms` 
+            animationDelay: `${delay + delayStep * (index + 1)}ms` 
           }}
         >
-          {char}
+          {char == ' ' ? '\u00A0' : char}
         </span>
       ))}
     </>
