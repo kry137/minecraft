@@ -3,7 +3,7 @@ import creeperFlat from '../assets/images/Creeper.png';
 import AnimatedText from '../components/AnimatedText';
 import { FitScreen } from '../components/FitScreen';
 
-export function Page1() {
+export default function Page1() {
   const refMain = useRef(null);
   const [label, setLabel] = useState("");
 

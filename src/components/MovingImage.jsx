@@ -1,36 +1,36 @@
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useRef } from "react";
 
-export default function MovingImage({ image, speed = 0.1, direction = 1, className }) {
-  const [progress, setProgress] = useState(0);
+export default function MovingImage({ image, speed = 0.1, direction = 1, className, animating = true }) {
+  const progressRef = useRef(0);
   const rafRef = useRef(null);
+  const divRef = useRef(null);
 
   useEffect(() => {
+    if (!animating) return;
+
     function main() {
-      setProgress(prev => {
-        let newProgress = prev + speed * direction;
-        if (direction > 0 && newProgress > 100) newProgress -= 100;
-        if (direction < 0 && newProgress < -100) newProgress += 100;
-        console.log(newProgress);
-        return newProgress;
-      });
+      progressRef.current += speed * direction;
+      if (direction > 0 && progressRef.current > 100) progressRef.current -= 100;
+      if (direction < 0 && progressRef.current < -100) progressRef.current += 100;
+
+      if (divRef.current) {
+        divRef.current.style.transform = `translateX(${-50 + progressRef.current / 2}%)`;
+      }
+
       rafRef.current = requestAnimationFrame(main);
     }
 
     rafRef.current = requestAnimationFrame(main);
-
     return () => cancelAnimationFrame(rafRef.current);
-  }, [speed, direction]);
+  }, [speed, direction, animating]);
 
   return (
-    <div className={`relative overflow-hidden ${className}`}>
+    <div className={`${className} relative overflow-hidden`}>
       <div
-        className="absolute inset-0 flex"
-        style={{ transform: `translateX(${-100 + progress}%)` }}
-      >
-        <img src={image} alt="img" className="w-full h-full [image-rendering:pixelated]" />
-        <img src={image} alt="img" className="w-full h-full [image-rendering:pixelated]" />
-        <img src={image} alt="img" className="w-full h-full [image-rendering:pixelated]" />
-      </div>
+        ref={divRef}
+        className="absolute inset-0 flex w-[300%] h-full bg-contain bg-center [image-rendering:pixelated]"
+        style={{ backgroundImage: `url(${image})` }}
+      ></div>
     </div>
   );
 }

@@ -4,7 +4,7 @@ import steve from '../assets/images/Steve.png';
 import AnimatedText from '../components/AnimatedText';
 import { FitScreen } from '../components/FitScreen';
 
-export function Page2() {
+export default function Page2() {
   const [label, setLabel] = useState(['', '']);
   const refSteve = useRef(null);
   const refAlex = useRef(null);

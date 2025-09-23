@@ -2,7 +2,7 @@ import { useState, useRef, useEffect } from 'react';
 import dirtBlock from '../assets/images/blocks/dirt.webp';
 import { FitScreen } from '../components/FitScreen';
 
-export function Page3() {
+export default function Page3({ setWorld }) {
   const [loading, setLoading] = useState({ label: "Creating...", value: 0 });
   const [isLoading, setIsloading] = useState(false);
   const refMain = useRef(null);
@@ -57,15 +57,15 @@ export function Page3() {
     const steps = [
       { delay: 0, data: { label: "Building Terrain", value: 0 } },
       { delay: 500, data: { label: "Building Terrain", value: 20 } },
-      { delay: 1000, data: { label: "Building Terrain", value: 40 } },
-      { delay: 1500, data: { label: "Building Terrain", value: 60 } },
-      { delay: 2000, data: { label: "Saving Chunks", value: 60 } },
-      { delay: 3000, data: { label: "Saving Chunks", value: 75 } },
-      { delay: 3500, data: { label: "Saving Chunks", value: 90 } },
-      { delay: 3900, data: { label: "Saving Chunks", value: 90 } },
-      { delay: 4500, data: { label: "Saving Chunks", value: 95 } },
-      { delay: 5000, data: { label: "Saving Chunks", value: 98 } },
-      { delay: 6500, data: { label: "Completed", value: 100 } },
+      { delay: 750, data: { label: "Building Terrain", value: 40 } },
+      { delay: 1200, data: { label: "Building Terrain", value: 60 } },
+      { delay: 1500, data: { label: "Saving Chunks", value: 60 } },
+      { delay: 2000, data: { label: "Saving Chunks", value: 75 } },
+      { delay: 2500, data: { label: "Saving Chunks", value: 90 } },
+      { delay: 3000, data: { label: "Saving Chunks", value: 90 } },
+      { delay: 3800, data: { label: "Saving Chunks", value: 95 } },
+      { delay: 4500, data: { label: "Saving Chunks", value: 98 } },
+      { delay: 5500, data: { label: "Completed", value: 100 } },
     ];
 
     const timeOuts = steps.map(step => setTimeout(() => setLoading(step.data), step.delay)
@@ -73,6 +73,11 @@ export function Page3() {
 
     return () => timeOuts.forEach(clearTimeout);
   }, [isLoading]);
+
+  // GENERATE WORLD IF LOADING STATE IS 100%
+  useEffect(() => {
+    if (loading.value >= 100) setWorld(true);
+  }, [loading])
 
   return (
     <FitScreen className='relative snap-start'>
